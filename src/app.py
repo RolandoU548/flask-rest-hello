@@ -201,16 +201,54 @@ def get_favoritesCharacters():
     all_favorites_characters = list(map(lambda x: x.serialize(), favorites_characters))
     return jsonify(all_favorites_characters), 200
 
+
+@app.route("/favorites-characters/<int:user_id>", methods=["GET"])
+def get_favoriteUserCharacters(user_id):
+    favorites_characters = FavoriteCharacter.query.all()
+    all_favorites_characters = list(map(lambda x: x.serialize(), favorites_characters))
+    all_favorites_characters = [
+        favorite_character
+        for favorite_character in all_favorites_characters
+        if favorite_character["user_id"] == user_id
+    ]
+    return jsonify(all_favorites_characters), 200
+
+
 @app.route("/favorites-vehicles", methods=["GET"])
 def get_favoritesVehicles():
     favorites_vehicles = FavoriteVehicle.query.all()
     all_favorites_vehicles = list(map(lambda x: x.serialize(), favorites_vehicles))
     return jsonify(all_favorites_vehicles), 200
 
+
+@app.route("/favorites-vehicles/<int:user_id>", methods=["GET"])
+def get_favoriteUserVehicles(user_id):
+    favorites_vehicles = FavoriteVehicle.query.all()
+    all_favorites_vehicles = list(map(lambda x: x.serialize(), favorites_vehicles))
+    all_favorites_vehicles = [
+        favorite_vehicle
+        for favorite_vehicle in all_favorites_vehicles
+        if favorite_vehicle["user_id"] == user_id
+    ]
+    return jsonify(all_favorites_vehicles), 200
+
+
 @app.route("/favorites-planets", methods=["GET"])
 def get_favoritesPlanets():
     favorites_planets = FavoritePlanet.query.all()
     all_favorites_planets = list(map(lambda x: x.serialize(), favorites_planets))
+    return jsonify(all_favorites_planets), 200
+
+
+@app.route("/favorites-planets/<int:user_id>", methods=["GET"])
+def get_favoriteUserPlanets(user_id):
+    favorites_planets = FavoritePlanet.query.all()
+    all_favorites_planets = list(map(lambda x: x.serialize(), favorites_planets))
+    all_favorites_planets = [
+        favorite_planet
+        for favorite_planet in all_favorites_planets
+        if favorite_planet["user_id"] == user_id
+    ]
     return jsonify(all_favorites_planets), 200
 
 
