@@ -51,14 +51,14 @@ def sitemap():
     return generate_sitemap(app)
 
 
-@app.route("/user", methods=["GET"])
+@app.route("/users", methods=["GET"])
 def get_users():
     users = User.query.all()
     all_users = list(map(lambda x: x.serialize(), users))
     return jsonify(all_users), 200
 
 
-@app.route("/user/<int:id>", methods=["GET"])
+@app.route("/users/<int:id>", methods=["GET"])
 def get_user(id):
     user = User.query.get(id)
     if user == None:
@@ -66,7 +66,7 @@ def get_user(id):
     return jsonify(user.serialize()), 200
 
 
-@app.route("/user", methods=["POST"])
+@app.route("/users", methods=["POST"])
 def create_user():
     request_body_user = request.get_json()
     user1 = User(
@@ -79,14 +79,14 @@ def create_user():
     return jsonify({"message": "User has been created"}), 200
 
 
-@app.route("/characters", methods=["GET"])
+@app.route("/people", methods=["GET"])
 def get_characters():
     characters = Character.query.all()
     all_characters = list(map(lambda x: x.serialize(), characters))
     return jsonify(all_characters), 200
 
 
-@app.route("/characters/<int:id>", methods=["GET"])
+@app.route("/people/<int:id>", methods=["GET"])
 def get_character(id):
     character = Character.query.get(id)
     if character == None:
@@ -94,7 +94,7 @@ def get_character(id):
     return jsonify(character.serialize()), 200
 
 
-@app.route("/characters", methods=["POST"])
+@app.route("/people", methods=["POST"])
 def create_character():
     request_body_character = request.get_json()
     character1 = Character(
@@ -195,14 +195,14 @@ def get_planet(id):
     return jsonify(planet.serialize()), 200
 
 
-@app.route("/favorites-characters", methods=["GET"])
+@app.route("/favorite/people", methods=["GET"])
 def get_favoritesCharacters():
     favorites_characters = FavoriteCharacter.query.all()
     all_favorites_characters = list(map(lambda x: x.serialize(), favorites_characters))
     return jsonify(all_favorites_characters), 200
 
 
-@app.route("/favorites-characters/<int:user_id>", methods=["GET"])
+@app.route("/favorite/people/<int:user_id>", methods=["GET"])
 def get_favoriteUserCharacters(user_id):
     favorites_characters = FavoriteCharacter.query.all()
     all_favorites_characters = list(map(lambda x: x.serialize(), favorites_characters))
@@ -213,15 +213,25 @@ def get_favoriteUserCharacters(user_id):
     ]
     return jsonify(all_favorites_characters), 200
 
+@app.route("/favorite/people", methods=["POST"])
+def create_favorite_character():
+    request_body_character = request.get_json()
+    favorite_character1 = FavoriteCharacter(
+        user_id=request_body_character["user_id"],
+        character_id=request_body_character["character_id"],
+    )
+    db.session.add( favorite_character1)
+    db.session.commit()
+    return jsonify({"message": "Favorite character has been added"}), 200
 
-@app.route("/favorites-vehicles", methods=["GET"])
+@app.route("/favorite/vehicles", methods=["GET"])
 def get_favoritesVehicles():
     favorites_vehicles = FavoriteVehicle.query.all()
     all_favorites_vehicles = list(map(lambda x: x.serialize(), favorites_vehicles))
     return jsonify(all_favorites_vehicles), 200
 
 
-@app.route("/favorites-vehicles/<int:user_id>", methods=["GET"])
+@app.route("/favorite/vehicles/<int:user_id>", methods=["GET"])
 def get_favoriteUserVehicles(user_id):
     favorites_vehicles = FavoriteVehicle.query.all()
     all_favorites_vehicles = list(map(lambda x: x.serialize(), favorites_vehicles))
@@ -232,15 +242,25 @@ def get_favoriteUserVehicles(user_id):
     ]
     return jsonify(all_favorites_vehicles), 200
 
+@app.route("/favorite/vehicles", methods=["POST"])
+def create_favorite_vehicle():
+    request_body_vehicle = request.get_json()
+    favorite_vehicle1 = FavoriteVehicle(
+        user_id=request_body_vehicle["user_id"],
+        vehicle_id=request_body_vehicle["vehicle_id"],
+    )
+    db.session.add( favorite_vehicle1)
+    db.session.commit()
+    return jsonify({"message": "Favorite vehicle has been added"}), 200
 
-@app.route("/favorites-planets", methods=["GET"])
+@app.route("/favorite/planets", methods=["GET"])
 def get_favoritesPlanets():
     favorites_planets = FavoritePlanet.query.all()
     all_favorites_planets = list(map(lambda x: x.serialize(), favorites_planets))
     return jsonify(all_favorites_planets), 200
 
 
-@app.route("/favorites-planets/<int:user_id>", methods=["GET"])
+@app.route("/favorite/planets/<int:user_id>", methods=["GET"])
 def get_favoriteUserPlanets(user_id):
     favorites_planets = FavoritePlanet.query.all()
     all_favorites_planets = list(map(lambda x: x.serialize(), favorites_planets))
@@ -251,6 +271,16 @@ def get_favoriteUserPlanets(user_id):
     ]
     return jsonify(all_favorites_planets), 200
 
+@app.route("/favorite/planets", methods=["POST"])
+def create_favorite_planet():
+    request_body_planet = request.get_json()
+    favorite_planet1 = FavoritePlanet(
+        user_id=request_body_planet["user_id"],
+        planet_id=request_body_planet["planet_id"],
+    )
+    db.session.add( favorite_planet1)
+    db.session.commit()
+    return jsonify({"message": "Favorite planet has been added"}), 200
 
 if __name__ == "__main__":
     PORT = int(os.environ.get("PORT", 3000))

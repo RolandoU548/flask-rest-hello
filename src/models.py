@@ -8,9 +8,6 @@ class User(db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(80), unique=False, nullable=False)
     is_active = db.Column(db.Boolean(), unique=False, nullable=False)
-    favorite_character = db.relationship("FavoriteCharacter")
-    favorite_vehicle = db.relationship("FavoriteVehicle")
-    favorite_planet = db.relationship("FavoritePlanet")
 
     def __repr__(self):
         return "<User %r>" % self.email
@@ -38,7 +35,6 @@ class Character(db.Model):
     created = db.Column(db.String(50), nullable=False)
     edited = db.Column(db.String(50), nullable=False)
     img = db.Column(db.String(100), nullable=False)
-    favorite_character = db.relationship("FavoriteCharacter")
 
     def __repr__(self):
         return "<Character %r>" % self.name
@@ -80,7 +76,6 @@ class Vehicle(db.Model):
     created = db.Column(db.String(50), nullable=False)
     edited = db.Column(db.String(50), nullable=False)
     img = db.Column(db.String(100), nullable=False)
-    favorite_vehicle = db.relationship("FavoriteVehicle")
 
     def __repr__(self):
         return "<Vehicle %r>" % self.name
@@ -122,7 +117,6 @@ class Planet(db.Model):
     created = db.Column(db.String(50), nullable=False)
     edited = db.Column(db.String(50), nullable=False)
     img = db.Column(db.String(100), nullable=False)
-    favorite_planet = db.relationship("FavoritePlanet")
 
     def __repr__(self):
         return "<Planet %r>" % self.name
