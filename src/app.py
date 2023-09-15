@@ -224,12 +224,20 @@ def create_favorite_character():
     db.session.commit()
     return jsonify({"message": "Favorite character has been added"}), 200
 
+@app.route("/favorite/people/<int:favorite_id>", methods=["DELETE"])
+def delete_favoriteCharacter(favorite_id):
+    favorite_character = FavoriteCharacter.query.get(favorite_id)
+    if favorite_character == None:
+        raise APIException("Favorite Not Found", status_code=404)
+    db.session.delete(favorite_character)
+    db.session.commit()
+    return jsonify({"message" : "Favorite deleted"}), 200
+
 @app.route("/favorite/vehicles", methods=["GET"])
 def get_favoritesVehicles():
     favorites_vehicles = FavoriteVehicle.query.all()
     all_favorites_vehicles = list(map(lambda x: x.serialize(), favorites_vehicles))
     return jsonify(all_favorites_vehicles), 200
-
 
 @app.route("/favorite/vehicles/<int:user_id>", methods=["GET"])
 def get_favoriteUserVehicles(user_id):
@@ -252,6 +260,15 @@ def create_favorite_vehicle():
     db.session.add( favorite_vehicle1)
     db.session.commit()
     return jsonify({"message": "Favorite vehicle has been added"}), 200
+
+@app.route("/favorite/vehicles/<int:favorite_id>", methods=["DELETE"])
+def delete_favoriteVehicle(favorite_id):
+    favorite_vehicle = FavoriteVehicle.query.get(favorite_id)
+    if favorite_vehicle == None:
+        raise APIException("Favorite Not Found", status_code=404)
+    db.session.delete(favorite_vehicle)
+    db.session.commit()
+    return jsonify({"message" : "Favorite deleted"}), 200
 
 @app.route("/favorite/planets", methods=["GET"])
 def get_favoritesPlanets():
@@ -281,6 +298,15 @@ def create_favorite_planet():
     db.session.add( favorite_planet1)
     db.session.commit()
     return jsonify({"message": "Favorite planet has been added"}), 200
+
+@app.route("/favorite/planets/<int:favorite_id>", methods=["DELETE"])
+def delete_favoritePlanet(favorite_id):
+    favorite_planet = FavoritePlanet.query.get(favorite_id)
+    if favorite_planet == None:
+        raise APIException("Favorite Not Found", status_code=404)
+    db.session.delete(favorite_planet)
+    db.session.commit()
+    return jsonify({"message" : "Favorite deleted"}), 200
 
 if __name__ == "__main__":
     PORT = int(os.environ.get("PORT", 3000))
